@@ -1,0 +1,60 @@
+{
+  "expo": {
+    "name": "GreenPulse",
+    "slug": "greenpulse",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "scheme": "greenpulse",
+    "userInterfaceStyle": "dark",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#060E08"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#060E08"
+      },
+      "package": "app.greenpulse.android",
+      "permissions": [
+        "CAMERA",
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION",
+        "VIBRATE"
+      ],
+      "googleServicesFile": "./google-services.json"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "GreenPulse needs camera access to verify your tree planting."
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "GreenPulse needs your location to certify the planting coordinates."
+        }
+      ],
+      "expo-notifications"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "YOUR_EAS_PROJECT_ID"
+      },
+      "supabaseUrl": "",
+      "supabaseAnonKey": "",
+      "apiBaseUrl": "https://api.greenpulse.app",
+      "posthogKey": "",
+      "sentryDsn": "",
+      "revenueCatApiKey": ""
+    }
+  }
+}
