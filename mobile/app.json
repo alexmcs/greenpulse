@@ -90,9 +90,9 @@
       "eas": {
         "projectId": "alexmcs"
       },
-      "supabaseUrl": "",
-      "supabaseAnonKey": "",
-      "apiBaseUrl": "https://api.greenpulse.app",
+      "supabaseUrl": "https://vcdulcpzaplohpkxzbnm.supabase.co",
+      "supabaseAnonKey": "sb_publishable_JU3Um5cUgq7x32rgvywVHw_v43W-dDW",
+      "apiBaseUrl": "https://greenpulse-backend-6b4y.onrender.com",
       "posthogKey": "",
       "posthogHost": "https://eu.posthog.com",
       "sentryDsn": "",
