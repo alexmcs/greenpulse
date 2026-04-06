@@ -51,6 +51,18 @@
       ]
     },
     "plugins": [
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "compileSdkVersion": 34,
+            "targetSdkVersion": 34,
+            "minSdkVersion": 24,
+            "buildToolsVersion": "34.0.0",
+            "kotlinVersion": "1.9.24"
+          }
+        }
+      ],
       "expo-router",
       [
         "expo-camera",
@@ -70,17 +82,6 @@
           "icon": "./assets/notification-icon.png",
           "color": "#1DB954",
           "defaultChannel": "default"
-        }
-      ],
-      [
-        "expo-build-properties",
-        {
-          "android": {
-            "compileSdkVersion": 34,
-            "targetSdkVersion": 34,
-            "minSdkVersion": 24,
-            "buildToolsVersion": "34.0.0"
-          }
         }
       ]
     ],
