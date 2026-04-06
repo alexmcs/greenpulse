@@ -1,4 +1,4 @@
-# Python
+﻿# Python
 __pycache__/
 *.py[cod]
 *.pyo
@@ -66,7 +66,6 @@ logs/
 secrets/*.json
 secrets/*.p12
 secrets/*.jks
-mobile/google-services.json
 mobile/GoogleService-Info.plist
 
 # Test coverage
