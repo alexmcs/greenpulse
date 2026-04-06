@@ -3,6 +3,9 @@
     "name": "GreenPulse",
     "slug": "greenpulse",
     "version": "1.0.0",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "scheme": "greenpulse",
@@ -18,41 +21,76 @@
         "backgroundColor": "#060E08"
       },
       "package": "app.greenpulse.android",
+      "versionCode": 1,
+      "compileSdkVersion": 34,
+      "targetSdkVersion": 34,
+      "minSdkVersion": 24,
       "permissions": [
-        "CAMERA",
-        "ACCESS_FINE_LOCATION",
-        "ACCESS_COARSE_LOCATION",
-        "VIBRATE"
+        "android.permission.CAMERA",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.VIBRATE",
+        "android.permission.RECEIVE_BOOT_COMPLETED",
+        "android.permission.SCHEDULE_EXACT_ALARM"
       ],
-      "googleServicesFile": "./google-services.json"
+      "googleServicesFile": "./google-services.json",
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "autoVerify": true,
+          "data": [
+            {
+              "scheme": "https",
+              "host": "greenpulse.app",
+              "pathPrefix": "/verify"
+            }
+          ],
+          "category": ["BROWSABLE", "DEFAULT"]
+        }
+      ]
     },
     "plugins": [
       "expo-router",
       [
         "expo-camera",
         {
-          "cameraPermission": "GreenPulse needs camera access to verify your tree planting."
+          "cameraPermission": "GreenPulse needs camera access to verify your tree planting. No gallery access is provided — only live photos are accepted."
         }
       ],
       [
         "expo-location",
         {
-          "locationWhenInUsePermission": "GreenPulse needs your location to certify the planting coordinates."
+          "locationWhenInUsePermission": "GreenPulse needs your location to include GPS coordinates in the planting certificate."
         }
       ],
-      "expo-notifications"
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/notification-icon.png",
+          "color": "#1DB954",
+          "defaultChannel": "default"
+        }
+      ],
+      [
+        "@sentry/react-native/expo",
+        {
+          "url": "https://sentry.io/",
+          "project": "greenpulse-mobile"
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true
     },
     "extra": {
       "eas": {
-        "projectId": "YOUR_EAS_PROJECT_ID"
+        "projectId": "REPLACE_WITH_EAS_PROJECT_ID"
       },
       "supabaseUrl": "",
       "supabaseAnonKey": "",
       "apiBaseUrl": "https://api.greenpulse.app",
       "posthogKey": "",
+      "posthogHost": "https://eu.posthog.com",
       "sentryDsn": "",
       "revenueCatApiKey": ""
     }

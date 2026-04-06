@@ -59,12 +59,15 @@ logs/
 *.log
 *.log.*
 
-# Secrets / credentials (never commit!)
+# Secrets / credentials — NEVER commit these!
 .env
 .env.local
 .env.production
-secrets/
-credentials/
+secrets/*.json
+secrets/*.p12
+secrets/*.jks
+mobile/google-services.json
+mobile/GoogleService-Info.plist
 
 # Test coverage
 coverage/
