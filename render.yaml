@@ -1,0 +1,38 @@
+services:
+  - type: web
+    name: greenpulse-backend
+    runtime: python
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    plan: free
+    region: frankfurt
+    envVars:
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_ANON_KEY
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      - key: AWS_ACCESS_KEY_ID
+        sync: false
+      - key: AWS_SECRET_ACCESS_KEY
+        sync: false
+      - key: AWS_REGION
+        value: eu-west-1
+      - key: AWS_REKOGNITION_PROJECT_ARN
+        sync: false
+      - key: REVENUECAT_ANDROID_API_KEY
+        sync: false
+      - key: POSTHOG_API_KEY
+        sync: false
+      - key: POSTHOG_HOST
+        value: https://eu.posthog.com
+      - key: SENTRY_DSN_BACKEND
+        sync: false
+      - key: SECRET_KEY
+        generateValue: true
+      - key: CERTIFICATE_BASE_URL
+        value: https://greenpulse-backend.onrender.com/verify
+      - key: PYTHON_VERSION
+        value: "3.11.0"
