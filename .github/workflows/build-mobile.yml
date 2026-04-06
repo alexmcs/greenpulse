@@ -35,7 +35,7 @@ jobs:
           cache-dependency-path: mobile/package-lock.json
 
       - name: Install EAS CLI
-        run: npm install -g eas-cli
+        run: npm install -g eas-cli@18
 
       - name: Install dependencies
         run: cd mobile && npm ci
@@ -53,7 +53,8 @@ jobs:
         run: |
           cd mobile
           PROFILE="${{ github.event.inputs.profile || 'production' }}"
-          eas build --platform android --profile "$PROFILE" --non-interactive
+          eas build --platform android --profile "$PROFILE" --non-interactive --no-wait
+          echo "Build submitted! Monitor at: https://expo.dev/accounts/alexmcs/projects/greenpulse/builds"
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
 

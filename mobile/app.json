@@ -22,9 +22,6 @@
       },
       "package": "app.greenpulse.android",
       "versionCode": 1,
-      "compileSdkVersion": 34,
-      "targetSdkVersion": 34,
-      "minSdkVersion": 24,
       "permissions": [
         "android.permission.CAMERA",
         "android.permission.ACCESS_FINE_LOCATION",
@@ -76,18 +73,12 @@
         }
       ],
       [
-        "@sentry/react-native/expo",
-        {
-          "url": "https://sentry.io/",
-          "project": "greenpulse-mobile"
-        }
-      ],
-      [
         "expo-build-properties",
         {
           "android": {
             "compileSdkVersion": 34,
             "targetSdkVersion": 34,
+            "minSdkVersion": 24,
             "buildToolsVersion": "34.0.0"
           }
         }
