@@ -88,7 +88,7 @@
     },
     "extra": {
       "eas": {
-        "projectId": "alexmcs"
+        "projectId": "974b1608-8240-4bca-9310-7a850f4cab01"
       },
       "supabaseUrl": "https://vcdulcpzaplohpkxzbnm.supabase.co",
       "supabaseAnonKey": "sb_publishable_JU3Um5cUgq7x32rgvywVHw_v43W-dDW",
@@ -100,6 +100,7 @@
       "router": {
         "origin": false
       }
-    }
+    },
+    "owner": "alexmcs"
   }
 }
