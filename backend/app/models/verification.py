@@ -25,10 +25,12 @@ class SpeciesCandidate(BaseModel):
 
 
 class VerifyResponse(BaseModel):
+    model_config = {"arbitrary_types_allowed": True}
+
     certificate_id: Optional[UUID] = None
     species: str
     co2_kg_year: float
     qr_url: Optional[str] = None
     confidence: float
     antifrod_flags: list[str] = []
-    species_candidates: Optional[list[SpeciesCandidate]] = None  # when confidence < 0.7
+    species_candidates: Optional[list[SpeciesCandidate]] = None  # when confidence < 0.70
