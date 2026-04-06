@@ -40,16 +40,9 @@ jobs:
       - name: Install dependencies
         run: cd mobile && npm ci
 
-      - name: Write google-services.json
+      - name: Override google-services.json from secret
         if: ${{ secrets.GOOGLE_SERVICES_JSON != '' }}
         run: echo '${{ secrets.GOOGLE_SERVICES_JSON }}' > mobile/google-services.json
-
-      - name: Write placeholder google-services.json
-        if: ${{ secrets.GOOGLE_SERVICES_JSON == '' }}
-        run: |
-          cat > mobile/google-services.json << 'EOF'
-          {"project_info":{"project_number":"000000000000","project_id":"greenpulse-placeholder","storage_bucket":"greenpulse-placeholder.appspot.com"},"client":[{"client_info":{"mobilesdk_app_id":"1:000000000000:android:0000000000000000","android_client_info":{"package_name":"app.greenpulse.android"}},"api_key":[{"current_key":"placeholder"}],"services":{"appinvite_service":{"other_platform_oauth_client":[]}}}],"configuration_version":"1"}
-          EOF
 
       - name: Build Android
         id: build
