@@ -34,4 +34,15 @@ export const authService = {
     await apiClient.delete('/users/me');
     await supabase.auth.signOut();
   },
+
+  getCurrentUser: async () => {
+    const { data } = await supabase.auth.getUser();
+    return data.user;
+  },
+
+  isAdmin: async () => {
+    const { data } = await supabase.auth.getUser();
+    const role = data.user?.user_metadata?.role;
+    return role === 'admin' || role === 'moderator';
+  },
 };

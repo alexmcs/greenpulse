@@ -1,16 +1,13 @@
 import PostHog from 'posthog-react-native';
 import Constants from 'expo-constants';
 
-export const posthog = new PostHog(
-  Constants.expoConfig?.extra?.posthogKey ?? '',
-  { host: 'https://eu.posthog.com' },
-);
+const posthogKey = Constants.expoConfig?.extra?.posthogKey ?? '';
 
-// Verification funnel events:
-// posthog.capture('verification_started')
-// posthog.capture('photo_taken')
-// posthog.capture('species_identified', { species, confidence, source })
-// posthog.capture('payment_initiated', { amount: 1.00 })
-// posthog.capture('certificate_issued', { certificate_id })
-// posthog.capture('certificate_shared')
-// posthog.capture('low_confidence_manual_select', { species })
+// Guard: PostHog crashes with empty API key
+export const posthog = posthogKey
+  ? new PostHog(posthogKey, { host: Constants.expoConfig?.extra?.posthogHost ?? 'https://eu.posthog.com' })
+  : null;
+
+export const track = (event: string, properties?: Record<string, unknown>) => {
+  posthog?.capture(event, properties);
+};

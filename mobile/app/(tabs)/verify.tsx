@@ -12,7 +12,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { CameraView, useCameraPermissions } from 'expo-camera';
 import * as Location from 'expo-location';
 import { useVerificationStore } from '../../store/verificationStore';
-import { posthog } from '../../services/analytics';
+import { track } from '../../services/analytics';
 
 type VerifyStep = 'camera' | 'loading' | 'result' | 'lowConfidence' | 'payment' | 'success';
 
@@ -24,7 +24,7 @@ export default function VerifyScreen() {
   const { setCurrentPhoto, setGpsCoords } = useVerificationStore();
 
   useEffect(() => {
-    posthog.capture('verification_started');
+    track('verification_started');
     requestLocationPermission();
   }, []);
 
@@ -49,7 +49,7 @@ export default function VerifyScreen() {
       // @ts-ignore
       const photo = await cameraRef.current.takePictureAsync({ quality: 0.85 });
       setCurrentPhoto(photo.uri);
-      posthog.capture('photo_taken');
+      track('photo_taken');
       setStep('loading');
       // TODO: upload photo and call /api/v1/verify
     }
