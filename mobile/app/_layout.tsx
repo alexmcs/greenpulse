@@ -1,7 +1,8 @@
-import { Stack } from 'expo-router';
+import { Stack, useRouter } from 'expo-router';
 import { useEffect } from 'react';
 import * as Sentry from '@sentry/react-native';
 import Constants from 'expo-constants';
+import { authService } from '../services/auth';
 
 Sentry.init({
   dsn: Constants.expoConfig?.extra?.sentryDsn,
@@ -9,6 +10,26 @@ Sentry.init({
 });
 
 export default function RootLayout() {
+  const router = useRouter();
+
+  useEffect(() => {
+    // Check session on mount — redirect to login if not authenticated
+    authService.getSession().then((session) => {
+      if (!session) {
+        router.replace('/(auth)/login');
+      }
+    });
+
+    // Listen for auth state changes (logout, token expiry)
+    const { data: { subscription } } = authService.onAuthStateChange((event, session) => {
+      if (!session) {
+        router.replace('/(auth)/login');
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
   return (
     <Stack
       screenOptions={{
@@ -22,3 +43,4 @@ export default function RootLayout() {
     </Stack>
   );
 }
+

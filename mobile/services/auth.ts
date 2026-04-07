@@ -2,7 +2,7 @@ import { createClient } from '@supabase/supabase-js';
 import Constants from 'expo-constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const supabase = createClient(
+export const supabase = createClient(
   Constants.expoConfig?.extra?.supabaseUrl ?? '',
   Constants.expoConfig?.extra?.supabaseAnonKey ?? '',
   { auth: { storage: AsyncStorage, autoRefreshToken: true, persistSession: true } },
@@ -45,4 +45,7 @@ export const authService = {
     const role = data.user?.user_metadata?.role;
     return role === 'admin' || role === 'moderator';
   },
+
+  onAuthStateChange: (callback: (event: string, session: any) => void) =>
+    supabase.auth.onAuthStateChange(callback),
 };

@@ -1,4 +1,4 @@
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { useState } from 'react';
 import { authService } from '../../services/auth';
 import { useRouter } from 'expo-router';
@@ -22,7 +22,7 @@ export default function RegisterScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.logo}>🌱 GreenPulse</Text>
+      <Image source={require('../../assets/logo.jpg')} style={styles.logo} resizeMode="contain" />
       <TextInput
         style={styles.input}
         placeholder="Имя"
@@ -60,7 +60,7 @@ export default function RegisterScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#060E08', padding: 24, justifyContent: 'center' },
-  logo: { fontSize: 32, fontWeight: 'bold', color: '#1DB954', textAlign: 'center', marginBottom: 40 },
+  logo: { width: 200, height: 120, alignSelf: 'center', marginBottom: 36 },
   input: { backgroundColor: '#0D1F10', borderRadius: 10, padding: 14, color: '#F0FFF4', marginBottom: 12, borderWidth: 1, borderColor: '#1a3320' },
   button: { backgroundColor: '#1DB954', borderRadius: 10, padding: 16, marginTop: 8 },
   buttonText: { color: '#060E08', fontWeight: 'bold', textAlign: 'center', fontSize: 16 },
