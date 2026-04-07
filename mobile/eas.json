@@ -14,9 +14,9 @@
     },
     "preview": {
       "distribution": "internal",
+      "image": "ubuntu-22.04-jdk-17-ndk-r26b",
       "android": {
-        "buildType": "apk",
-        "image": "ubuntu-22.04-jdk-17-ndk-r26b"
+        "buildType": "apk"
       },
       "env": {
         "EXPO_PUBLIC_API_ENV": "staging"
@@ -24,9 +24,9 @@
     },
     "production": {
       "autoIncrement": true,
+      "image": "ubuntu-22.04-jdk-17-ndk-r26b",
       "android": {
-        "buildType": "app-bundle",
-        "image": "ubuntu-22.04-jdk-17-ndk-r26b"
+        "buildType": "app-bundle"
       },
       "env": {
         "EXPO_PUBLIC_API_ENV": "production"
