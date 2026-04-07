@@ -16,7 +16,10 @@ export const authService = {
     const result = await supabase.auth.signUp({
       email,
       password,
-      options: { data: { display_name: displayName } },
+      options: {
+        data: { display_name: displayName },
+        emailRedirectTo: 'greenpulse://auth/callback',
+      },
     });
     return result;
   },

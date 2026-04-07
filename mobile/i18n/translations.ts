@@ -43,6 +43,11 @@ const ru = {
     password: 'Пароль',
     signUp: 'Зарегистрироваться',
     hasAccount: 'Уже есть аккаунт? Войти',
+    fillAll: 'Заполните все поля',
+    confirmTitle: 'Проверьте email',
+    confirmBody: 'Мы отправили ссылку для подтверждения на {email}. Нажмите на неё чтобы войти.',
+    goToLogin: 'Перейти к входу',
+    wrongEmail: 'Неверный email? Изменить',
   },
   verify: {
     cameraPermTitle: 'Нужен доступ к камере',
@@ -140,6 +145,11 @@ const en: Translations = {
     password: 'Password',
     signUp: 'Register',
     hasAccount: 'Already have an account? Sign In',
+    fillAll: 'Please fill in all fields',
+    confirmTitle: 'Check your email',
+    confirmBody: 'We sent a confirmation link to {email}. Tap it to sign in.',
+    goToLogin: 'Go to Sign In',
+    wrongEmail: 'Wrong email? Change it',
   },
   verify: {
     cameraPermTitle: 'Camera access required',
@@ -212,7 +222,7 @@ const zh: Translations = {
   tabs: { home: '首页', verify: '验证', certificates: '证书', profile: '我的' },
   home: { tagline: '种一棵树，获得证书。', verifyButton: '验证种植' },
   login: { email: '邮箱', password: '密码', signIn: '登录', noAccount: '没有账户？立即注册' },
-  register: { name: '姓名', email: '邮箱', password: '密码', signUp: '注册', hasAccount: '已有账户？登录' },
+  register: { name: '姓名', email: '邮箕', password: '密码', signUp: '注册', hasAccount: '已有账户？登录', fillAll: '请填写所有字段', confirmTitle: '查看您的邮箕', confirmBody: '我们已将确认链接发送至 {email}，点击即可登录。', goToLogin: '前往登录', wrongEmail: '邮箕错误？更改' },
   verify: {
     cameraPermTitle: '需要相机权限',
     cameraPermButton: '允许',
@@ -281,7 +291,7 @@ const es: Translations = {
   tabs: { home: 'Inicio', verify: 'Verificar', certificates: 'Certificados', profile: 'Perfil' },
   home: { tagline: 'Planta un árbol. Obtén un certificado.', verifyButton: 'Verificar plantación' },
   login: { email: 'Correo', password: 'Contraseña', signIn: 'Iniciar sesión', noAccount: '¿No tienes cuenta? Regístrate' },
-  register: { name: 'Nombre', email: 'Correo', password: 'Contraseña', signUp: 'Registrarse', hasAccount: '¿Ya tienes cuenta? Iniciar sesión' },
+  register: { name: 'Nombre', email: 'Correo', password: 'Contraseña', signUp: 'Registrarse', hasAccount: '¿Ya tienes cuenta? Iniciar sesión', fillAll: 'Por favor completa todos los campos', confirmTitle: 'Revisa tu correo', confirmBody: 'Enviamos un enlace de confirmación a {email}. Tócalo para iniciar sesión.', goToLogin: 'Ir a iniciar sesión', wrongEmail: '¿Correo incorrecto? Cambiarlo' },
   verify: {
     cameraPermTitle: 'Acceso a cámara requerido',
     cameraPermButton: 'Permitir',
@@ -350,7 +360,7 @@ const fr: Translations = {
   tabs: { home: 'Accueil', verify: 'Vérifier', certificates: 'Certificats', profile: 'Profil' },
   home: { tagline: 'Plantez un arbre. Obtenez un certificat.', verifyButton: 'Vérifier la plantation' },
   login: { email: 'Email', password: 'Mot de passe', signIn: 'Se connecter', noAccount: 'Pas de compte ? S\'inscrire' },
-  register: { name: 'Nom', email: 'Email', password: 'Mot de passe', signUp: 'S\'inscrire', hasAccount: 'Déjà un compte ? Se connecter' },
+  register: { name: 'Nom', email: 'Email', password: 'Mot de passe', signUp: "S'inscrire", hasAccount: "Déjà un compte ? Se connecter", fillAll: 'Veuillez remplir tous les champs', confirmTitle: 'Vérifiez vos emails', confirmBody: 'Nous avons envoyé un lien de confirmation à {email}. Cliquez dessus pour vous connecter.', goToLogin: 'Aller à la connexion', wrongEmail: 'Mauvais email ? Le modifier' },
   verify: {
     cameraPermTitle: 'Accès caméra requis',
     cameraPermButton: 'Autoriser',
@@ -419,7 +429,7 @@ const de: Translations = {
   tabs: { home: 'Start', verify: 'Verifizieren', certificates: 'Zertifikate', profile: 'Profil' },
   home: { tagline: 'Pflanze einen Baum. Erhalte ein Zertifikat.', verifyButton: 'Pflanzung verifizieren' },
   login: { email: 'E-Mail', password: 'Passwort', signIn: 'Anmelden', noAccount: 'Kein Konto? Registrieren' },
-  register: { name: 'Name', email: 'E-Mail', password: 'Passwort', signUp: 'Registrieren', hasAccount: 'Schon ein Konto? Anmelden' },
+  register: { name: 'Name', email: 'E-Mail', password: 'Passwort', signUp: 'Registrieren', hasAccount: 'Schon ein Konto? Anmelden', fillAll: 'Bitte alle Felder ausfüllen', confirmTitle: 'E-Mail überprüfen', confirmBody: 'Wir haben einen Bestätigungslink an {email} gesendet. Tippen Sie darauf, um sich anzumelden.', goToLogin: 'Zur Anmeldung', wrongEmail: 'Falsche E-Mail? Ändern' },
   verify: {
     cameraPermTitle: 'Kamerazugriff erforderlich',
     cameraPermButton: 'Erlauben',
@@ -488,7 +498,7 @@ const pt: Translations = {
   tabs: { home: 'Início', verify: 'Verificar', certificates: 'Certificados', profile: 'Perfil' },
   home: { tagline: 'Plante uma árvore. Obtenha um certificado.', verifyButton: 'Verificar plantio' },
   login: { email: 'E-mail', password: 'Senha', signIn: 'Entrar', noAccount: 'Não tem conta? Cadastre-se' },
-  register: { name: 'Nome', email: 'E-mail', password: 'Senha', signUp: 'Cadastrar-se', hasAccount: 'Já tem conta? Entrar' },
+  register: { name: 'Nome', email: 'E-mail', password: 'Senha', signUp: 'Cadastrar-se', hasAccount: 'Já tem conta? Entrar', fillAll: 'Por favor preencha todos os campos', confirmTitle: 'Verifique seu e-mail', confirmBody: 'Enviamos um link de confirmação para {email}. Toque nele para entrar.', goToLogin: 'Ir para entrar', wrongEmail: 'E-mail errado? Alterar' },
   verify: {
     cameraPermTitle: 'Acesso à câmera necessário',
     cameraPermButton: 'Permitir',
