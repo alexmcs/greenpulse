@@ -25,6 +25,7 @@ import { useVerificationStore } from '../../store/verificationStore';
 import { track } from '../../services/analytics';
 import { authService, supabase } from '../../services/auth';
 import { apiClient } from '../../services/api';
+import { useI18n } from '../../i18n';
 
 type VerifyStep = 'camera' | 'loading' | 'result' | 'lowConfidence' | 'payment' | 'success';
 
@@ -65,8 +66,9 @@ export default function VerifyScreen() {
   const [permission, requestPermission] = useCameraPermissions();
   const [locationPermission, requestLocationPermission] = Location.useForegroundPermissions();
   const [step, setStep] = useState<VerifyStep>('camera');
-  const [loadingText, setLoadingText] = useState('Загружаем фото...');
+  const [loadingText, setLoadingText] = useState('');
   const cameraRef = useRef(null);
+  const { t } = useI18n();
   const {
     setCurrentPhoto,
     setGpsCoords,
@@ -83,9 +85,9 @@ export default function VerifyScreen() {
   const handleTakePhoto = async () => {
     if (!locationPermission?.granted) {
       Alert.alert(
-        'GPS обязателен',
-        'Включите геолокацию — без неё сертификат не может быть выдан.',
-        [{ text: 'OK' }],
+        t.verify.gpsRequired,
+        t.verify.gpsRequiredMsg,
+        [{ text: t.common.ok }],
       );
       return;
     }
@@ -108,7 +110,7 @@ export default function VerifyScreen() {
 
     try {
       // ── Step 1: Upload photo to Supabase Storage ──────────────────────────
-      setLoadingText('Загружаем фото...');
+      setLoadingText(t.verify.uploading);
       const user = await authService.getCurrentUser();
       const userId = user?.id ?? 'anon';
       const storagePath = `${userId}/${Date.now()}.jpg`;
@@ -122,10 +124,10 @@ export default function VerifyScreen() {
         .from('verification-photos')
         .upload(storagePath, photoBytes, { contentType: 'image/jpeg', upsert: false });
 
-      if (storageError) throw new Error(`Ошибка загрузки фото: ${storageError.message}`);
+      if (storageError) throw new Error(storageError.message);
 
       // ── Step 2: Analyze via backend ───────────────────────────────────────
-      setLoadingText('Анализируем растение...');
+      setLoadingText(t.verify.analyzing);
       const deviceId = await getDeviceId();
 
       const response = await apiClient.post('/verify', {
@@ -148,13 +150,13 @@ export default function VerifyScreen() {
       const code = typeof detail === 'object' ? detail?.code : undefined;
       let msg: string;
       if (code === 'GALLERY_PHOTO_DETECTED') {
-        msg = 'Это фото не сделано только что. Используйте живую камеру.';
+        msg = t.verify.errGallery;
       } else if (code === 'PHOTO_NOT_FOUND') {
-        msg = 'Фото не удалось загрузить. Попробуйте ещё раз.';
+        msg = t.verify.errPhotoNotFound;
       } else {
-        msg = e?.message ?? 'Неизвестная ошибка';
+        msg = e?.message ?? t.common.error;
       }
-      Alert.alert('Ошибка', msg, [{ text: 'OK' }]);
+      Alert.alert(t.common.error, msg, [{ text: t.common.ok }]);
       setStep('camera');
     }
   };
@@ -181,9 +183,9 @@ export default function VerifyScreen() {
   if (!permission.granted) {
     return (
       <View style={styles.container}>
-        <Text style={styles.text}>Нужен доступ к камере</Text>
+        <Text style={styles.text}>{t.verify.cameraPermTitle}</Text>
         <TouchableOpacity style={styles.button} onPress={requestPermission}>
-          <Text style={styles.buttonText}>Разрешить</Text>
+          <Text style={styles.buttonText}>{t.verify.cameraPermButton}</Text>
         </TouchableOpacity>
       </View>
     );
@@ -203,9 +205,9 @@ export default function VerifyScreen() {
   if (step === 'lowConfidence' && verificationResult?.species_candidates) {
     return (
       <View style={styles.container}>
-        <Text style={[styles.text, { marginBottom: 8 }]}>Уточните вид растения</Text>
+        <Text style={[styles.text, { marginBottom: 8 }]}>{t.verify.pickSpecies}</Text>
         <Text style={styles.subtext}>
-          Мы не уверены на 100%. Выберите подходящий вид:
+          {t.verify.pickSpeciesHint}
         </Text>
         <ScrollView style={styles.scroll}>
           {verificationResult.species_candidates.map((c) => (
@@ -223,7 +225,7 @@ export default function VerifyScreen() {
           ))}
         </ScrollView>
         <TouchableOpacity style={styles.secondaryButton} onPress={handleReset}>
-          <Text style={styles.secondaryButtonText}>Переснять</Text>
+          <Text style={styles.secondaryButtonText}>{t.verify.retake}</Text>
         </TouchableOpacity>
       </View>
     );
@@ -233,36 +235,36 @@ export default function VerifyScreen() {
   if (step === 'result' && verificationResult) {
     return (
       <ScrollView contentContainerStyle={styles.resultContainer}>
-        <Text style={styles.resultTitle}>Растение определено!</Text>
+        <Text style={styles.resultTitle}>{t.verify.identified}</Text>
 
         <View style={styles.resultCard}>
-          <Text style={styles.resultLabel}>ВИД</Text>
+          <Text style={styles.resultLabel}>{t.verify.labelSpecies}</Text>
           <Text style={styles.resultValue}>{verificationResult.species}</Text>
         </View>
         <View style={styles.resultCard}>
-          <Text style={styles.resultLabel}>ПОГЛОЩЕНИЕ CO₂</Text>
+          <Text style={styles.resultLabel}>{t.verify.labelCo2}</Text>
           <Text style={styles.resultValue}>
-            {verificationResult.co2_kg_year.toFixed(1)} кг/год
+            {verificationResult.co2_kg_year.toFixed(1)} {t.verify.co2Unit}
           </Text>
         </View>
         <View style={styles.resultCard}>
-          <Text style={styles.resultLabel}>ТОЧНОСТЬ</Text>
+          <Text style={styles.resultLabel}>{t.verify.labelAccuracy}</Text>
           <Text style={styles.resultValue}>
-            {Math.round(verificationResult.confidence * 100)}%
+            {Math.round(verificationResult.confidence * 100)}{t.verify.accuracyUnit}
           </Text>
         </View>
 
         {verificationResult.antifrod_flags.includes('POSSIBLE_DUPLICATE') && (
           <Text style={styles.warning}>
-            ⚠️ Рядом уже было верифицировано дерево. Ваша запись получит дополнительную проверку.
+            {t.verify.possibleDuplicate}
           </Text>
         )}
 
         <TouchableOpacity style={styles.button} onPress={() => setStep('payment')}>
-          <Text style={styles.buttonText}>Получить сертификат</Text>
+          <Text style={styles.buttonText}>{t.verify.getCertificate}</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.secondaryButton} onPress={handleReset}>
-          <Text style={styles.secondaryButtonText}>Верифицировать ещё</Text>
+          <Text style={styles.secondaryButtonText}>{t.verify.verifyMore}</Text>
         </TouchableOpacity>
       </ScrollView>
     );
@@ -272,13 +274,13 @@ export default function VerifyScreen() {
   if (step === 'payment') {
     return (
       <View style={styles.container}>
-        <Text style={styles.text}>Оплата сертификата</Text>
-        <Text style={styles.subtext}>Интеграция с RevenueCat будет добавлена в следующей версии.</Text>
+        <Text style={styles.text}>{t.verify.paymentTitle}</Text>
+        <Text style={styles.subtext}>{t.verify.paymentHint}</Text>
         <TouchableOpacity style={styles.button} onPress={() => setStep('success')}>
-          <Text style={styles.buttonText}>Продолжить (тест)</Text>
+          <Text style={styles.buttonText}>{t.verify.paymentContinue}</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.secondaryButton} onPress={handleReset}>
-          <Text style={styles.secondaryButtonText}>Отмена</Text>
+          <Text style={styles.secondaryButtonText}>{t.common.cancel}</Text>
         </TouchableOpacity>
       </View>
     );
@@ -288,12 +290,12 @@ export default function VerifyScreen() {
   if (step === 'success') {
     return (
       <View style={styles.container}>
-        <Text style={styles.resultTitle}>🌱 Сертификат выдан!</Text>
+        <Text style={styles.resultTitle}>{t.verify.successTitle}</Text>
         {verificationResult?.qr_url ? (
           <Text style={styles.subtext}>QR-код: {verificationResult.qr_url}</Text>
         ) : null}
         <TouchableOpacity style={styles.button} onPress={handleReset}>
-          <Text style={styles.buttonText}>Верифицировать ещё</Text>
+          <Text style={styles.buttonText}>{t.verify.verifyMore}</Text>
         </TouchableOpacity>
       </View>
     );
@@ -305,7 +307,7 @@ export default function VerifyScreen() {
       {/* IMPORTANT: CameraView only — no ImagePicker, no gallery button */}
       <CameraView style={styles.camera} ref={cameraRef} facing="back">
         <View style={styles.overlay}>
-          <Text style={styles.hint}>Наведите камеру на саженец</Text>
+          <Text style={styles.hint}>{t.verify.hint}</Text>
           <TouchableOpacity style={styles.captureButton} onPress={handleTakePhoto}>
             <View style={styles.captureInner} />
           </TouchableOpacity>

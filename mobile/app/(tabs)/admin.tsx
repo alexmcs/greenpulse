@@ -10,6 +10,7 @@ import {
 import { useRouter } from 'expo-router';
 import { apiClient } from '../../services/api';
 import { authService } from '../../services/auth';
+import { useI18n } from '../../i18n';
 
 type Verification = {
   id: string;
@@ -38,6 +39,7 @@ export default function AdminScreen() {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [authorized, setAuthorized] = useState(false);
+  const { t } = useI18n();
 
   const loadData = useCallback(async () => {
     try {
@@ -58,7 +60,7 @@ export default function AdminScreen() {
     (async () => {
       const admin = await authService.isAdmin();
       if (!admin) {
-        Alert.alert('Нет доступа', 'Эта страница только для администраторов.');
+        Alert.alert(t.admin.noAccess, t.admin.noAccessMsg);
         router.back();
         return;
       }
@@ -79,21 +81,21 @@ export default function AdminScreen() {
       await apiClient.post(`/admin/verifications/${id}/approve`, {});
       setVerifications(v => v.filter(x => x.id !== id));
     } catch {
-      Alert.alert('Ошибка', 'Не удалось одобрить верификацию');
+      Alert.alert(t.common.error, t.admin.errApprove);
     }
   };
 
   const handleReject = async (id: string) => {
-    Alert.alert('Отклонить?', 'Верификация будет отклонена.', [
-      { text: 'Отмена', style: 'cancel' },
+    Alert.alert(t.admin.rejectTitle, t.admin.rejectMsg, [
+      { text: t.common.cancel, style: 'cancel' },
       {
-        text: 'Отклонить', style: 'destructive',
+        text: t.admin.reject.replace(/^[^ ]+ /, ''), style: 'destructive',
         onPress: async () => {
           try {
             await apiClient.post(`/admin/verifications/${id}/reject`, {});
             setVerifications(v => v.filter(x => x.id !== id));
           } catch {
-            Alert.alert('Ошибка', 'Не удалось отклонить верификацию');
+            Alert.alert(t.common.error, t.admin.errReject);
           }
         },
       },
@@ -112,42 +114,42 @@ export default function AdminScreen() {
       contentContainerStyle={styles.content}
       refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#1DB954" />}
     >
-      <Text style={styles.title}>🛡 Панель администратора</Text>
+      <Text style={styles.title}>{t.admin.title}</Text>
 
       {/* Stats */}
       {stats && (
         <View style={styles.statsGrid}>
-          <StatCard label="Пользователей" value={stats.total_users} />
-          <StatCard label="Верификаций" value={stats.total_verifications} />
-          <StatCard label="На проверке" value={stats.pending_count} highlight />
-          <StatCard label="Одобрено" value={stats.approved_count} />
-          <StatCard label="Отклонено" value={stats.rejected_count} />
-          <StatCard label="Сертификатов" value={stats.total_certificates} />
+          <StatCard label={t.admin.users} value={stats.total_users} />
+          <StatCard label={t.admin.verifications} value={stats.total_verifications} />
+          <StatCard label={t.admin.pending} value={stats.pending_count} highlight />
+          <StatCard label={t.admin.approved} value={stats.approved_count} />
+          <StatCard label={t.admin.rejected} value={stats.rejected_count} />
+          <StatCard label={t.admin.certificates} value={stats.total_certificates} />
         </View>
       )}
 
       <Text style={styles.sectionTitle}>
-        Ожидают проверки ({verifications.length})
+        {t.admin.pendingSection} ({verifications.length})
       </Text>
 
       {verifications.length === 0 ? (
         <View style={styles.emptyBox}>
-          <Text style={styles.emptyText}>✅ Нет верификаций на проверке</Text>
+          <Text style={styles.emptyText}>{t.admin.noPending}</Text>
         </View>
       ) : (
         verifications.map((v) => (
           <View key={v.id} style={styles.card}>
             <Text style={styles.species}>{v.species_name}</Text>
             <Text style={styles.meta}>
-              Уверенность: {Math.round(v.confidence * 100)}% · {new Date(v.created_at).toLocaleDateString('ru-RU')}
+              {t.admin.confidence} {Math.round(v.confidence * 100)}% · {new Date(v.created_at).toLocaleDateString()}
             </Text>
-            <Text style={styles.meta}>GPS: {v.lat.toFixed(4)}, {v.lng.toFixed(4)}</Text>
+            <Text style={styles.meta}>{t.admin.gps} {v.lat.toFixed(4)}, {v.lng.toFixed(4)}</Text>
             <View style={styles.actions}>
               <TouchableOpacity style={styles.approveBtn} onPress={() => handleApprove(v.id)}>
-                <Text style={styles.actionText}>✅ Одобрить</Text>
+                <Text style={styles.actionText}>{t.admin.approve}</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.rejectBtn} onPress={() => handleReject(v.id)}>
-                <Text style={styles.actionText}>❌ Отклонить</Text>
+                <Text style={styles.actionText}>{t.admin.reject}</Text>
               </TouchableOpacity>
             </View>
           </View>

@@ -2,6 +2,7 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'reac
 import { useState } from 'react';
 import { authService } from '../../services/auth';
 import { useRouter } from 'expo-router';
+import { useI18n } from '../../i18n';
 
 export default function RegisterScreen() {
   const [email, setEmail] = useState('');
@@ -9,6 +10,7 @@ export default function RegisterScreen() {
   const [displayName, setDisplayName] = useState('');
   const [error, setError] = useState('');
   const router = useRouter();
+  const { t } = useI18n();
 
   const handleRegister = async () => {
     setError('');
@@ -25,14 +27,14 @@ export default function RegisterScreen() {
       <Image source={require('../../assets/logo.jpg')} style={styles.logo} resizeMode="contain" />
       <TextInput
         style={styles.input}
-        placeholder="Имя"
+        placeholder={t.register.name}
         placeholderTextColor="#5A7A5A"
         value={displayName}
         onChangeText={setDisplayName}
       />
       <TextInput
         style={styles.input}
-        placeholder="Email"
+        placeholder={t.register.email}
         placeholderTextColor="#5A7A5A"
         value={email}
         onChangeText={setEmail}
@@ -41,7 +43,7 @@ export default function RegisterScreen() {
       />
       <TextInput
         style={styles.input}
-        placeholder="Пароль"
+        placeholder={t.register.password}
         placeholderTextColor="#5A7A5A"
         value={password}
         onChangeText={setPassword}
@@ -49,10 +51,10 @@ export default function RegisterScreen() {
       />
       {error ? <Text style={styles.error}>{error}</Text> : null}
       <TouchableOpacity style={styles.button} onPress={handleRegister}>
-        <Text style={styles.buttonText}>Зарегистрироваться</Text>
+        <Text style={styles.buttonText}>{t.register.signUp}</Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={() => router.push('/(auth)/login')}>
-        <Text style={styles.link}>Уже есть аккаунт? Войти</Text>
+        <Text style={styles.link}>{t.register.hasAccount}</Text>
       </TouchableOpacity>
     </View>
   );

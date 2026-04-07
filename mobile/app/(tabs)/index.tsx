@@ -1,18 +1,20 @@
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { useRouter } from 'expo-router';
+import { useI18n } from '../../i18n';
 
 export default function HomeScreen() {
   const router = useRouter();
+  const { t } = useI18n();
 
   return (
     <View style={styles.container}>
       <Image source={require('../../assets/logo.jpg')} style={styles.logo} resizeMode="contain" />
-      <Text style={styles.tagline}>Посади дерево. Получи сертификат.</Text>
+      <Text style={styles.tagline}>{t.home.tagline}</Text>
       <TouchableOpacity
         style={styles.primaryButton}
         onPress={() => router.push('/(tabs)/verify')}
       >
-        <Text style={styles.primaryButtonText}>Верифицировать посадку</Text>
+        <Text style={styles.primaryButtonText}>{t.home.verifyButton}</Text>
       </TouchableOpacity>
     </View>
   );

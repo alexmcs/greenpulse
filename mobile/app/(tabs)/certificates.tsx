@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import { apiClient } from '../../services/api';
+import { useI18n } from '../../i18n';
 
 export default function CertificatesScreen() {
   const [certs, setCerts] = useState<any[]>([]);
+  const { t } = useI18n();
 
   useEffect(() => {
     apiClient.get('/certificates/').then(r => setCerts(r.data)).catch(console.error);
@@ -14,12 +16,12 @@ export default function CertificatesScreen() {
       <FlatList
         data={certs}
         keyExtractor={item => item.id}
-        ListEmptyComponent={<Text style={styles.empty}>Пока нет сертификатов</Text>}
+        ListEmptyComponent={<Text style={styles.empty}>{t.certificates.empty}</Text>}
         renderItem={({ item }) => (
           <TouchableOpacity style={styles.card}>
             <Text style={styles.species}>{item.verification?.species_name}</Text>
-            <Text style={styles.date}>{new Date(item.issued_at).toLocaleDateString('ru-RU')}</Text>
-            <Text style={styles.co2}>{item.verification?.co2_kg_year} кг CO₂/год</Text>
+            <Text style={styles.date}>{new Date(item.issued_at).toLocaleDateString()}</Text>
+            <Text style={styles.co2}>{item.verification?.co2_kg_year} {t.certificates.co2Unit}</Text>
           </TouchableOpacity>
         )}
       />

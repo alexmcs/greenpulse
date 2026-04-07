@@ -2,12 +2,14 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'reac
 import { useState } from 'react';
 import { authService } from '../../services/auth';
 import { useRouter } from 'expo-router';
+import { useI18n } from '../../i18n';
 
 export default function LoginScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const router = useRouter();
+  const { t } = useI18n();
 
   const handleLogin = async () => {
     setError('');
@@ -24,7 +26,7 @@ export default function LoginScreen() {
       <Image source={require('../../assets/logo.jpg')} style={styles.logo} resizeMode="contain" />
       <TextInput
         style={styles.input}
-        placeholder="Email"
+        placeholder={t.login.email}
         placeholderTextColor="#5A7A5A"
         value={email}
         onChangeText={setEmail}
@@ -33,7 +35,7 @@ export default function LoginScreen() {
       />
       <TextInput
         style={styles.input}
-        placeholder="Пароль"
+        placeholder={t.login.password}
         placeholderTextColor="#5A7A5A"
         value={password}
         onChangeText={setPassword}
@@ -41,10 +43,10 @@ export default function LoginScreen() {
       />
       {error ? <Text style={styles.error}>{error}</Text> : null}
       <TouchableOpacity style={styles.button} onPress={handleLogin}>
-        <Text style={styles.buttonText}>Войти</Text>
+        <Text style={styles.buttonText}>{t.login.signIn}</Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={() => router.push('/(auth)/register')}>
-        <Text style={styles.link}>Нет аккаунта? Зарегистрироваться</Text>
+        <Text style={styles.link}>{t.login.noAccount}</Text>
       </TouchableOpacity>
     </View>
   );

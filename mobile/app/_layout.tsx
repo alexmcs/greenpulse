@@ -3,13 +3,14 @@ import { useEffect } from 'react';
 import * as Sentry from '@sentry/react-native';
 import Constants from 'expo-constants';
 import { authService } from '../services/auth';
+import { LanguageProvider } from '../i18n';
 
 Sentry.init({
   dsn: Constants.expoConfig?.extra?.sentryDsn,
   enableInExpoDevelopment: false,
 });
 
-export default function RootLayout() {
+function AppNavigator() {
   const router = useRouter();
 
   useEffect(() => {
@@ -41,6 +42,14 @@ export default function RootLayout() {
       <Stack.Screen name="(auth)" options={{ headerShown: false }} />
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
     </Stack>
+  );
+}
+
+export default function RootLayout() {
+  return (
+    <LanguageProvider>
+      <AppNavigator />
+    </LanguageProvider>
   );
 }
 
