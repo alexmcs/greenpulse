@@ -9,19 +9,19 @@ on:
       profile:
         description: 'Build profile'
         required: true
-        default: 'production'
+        default: 'preview'
         type: choice
         options: [production, preview, development]
       submit:
         description: 'Submit to Google Play after build?'
         required: true
-        default: 'true'
+        default: 'false'
         type: choice
         options: ['true', 'false']
 
 jobs:
   build:
-    name: Build Android (${{ github.event.inputs.profile || 'production' }})
+    name: Build Android (${{ github.event.inputs.profile || 'preview' }})
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -50,14 +50,14 @@ jobs:
         id: build
         run: |
           cd mobile
-          PROFILE="${{ github.event.inputs.profile || 'production' }}"
+          PROFILE="${{ github.event.inputs.profile || 'preview' }}"
           eas build --platform android --profile "$PROFILE" --non-interactive --no-wait
           echo "Build submitted! Monitor at: https://expo.dev/accounts/alexmcs/projects/greenpulse/builds"
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
 
       - name: Submit to Google Play Internal Testing
-        if: ${{ github.event.inputs.submit != 'false' && (github.event.inputs.profile == 'production' || github.event.inputs.profile == '') }}
+        if: ${{ github.event.inputs.submit == 'true' && github.event.inputs.profile == 'production' }}
         run: cd mobile && eas submit --platform android --profile production --latest --non-interactive
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
@@ -66,5 +66,5 @@ jobs:
         if: always()
         run: |
           echo "## Android Build" >> $GITHUB_STEP_SUMMARY
-          echo "- Profile: ${{ github.event.inputs.profile || 'production' }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Profile: ${{ github.event.inputs.profile || 'preview' }}" >> $GITHUB_STEP_SUMMARY
           echo "- Dashboard: https://expo.dev/projects/greenpulse/builds" >> $GITHUB_STEP_SUMMARY
